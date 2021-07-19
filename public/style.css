@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: none;
+    box-sizing: border-box;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    width: 70%;
+    left: 15%;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    /* height: 50%; */
+    /* background-color: rgba(241, 187, 85,0.2); */
+}
+
+body {
+    background-color: rgb(31, 58, 38);
+}
+
+button, textarea, input {
+    border: none;
+    background-color: mintcream;
+    border-radius: 5%;
+    box-shadow: rgba(255, 222, 173,0.5) 3px 1px 3px 1px;
+    margin-top: 2rem;
+    border: 0.1px solid green;
+    font-size: 1.4rem;
+}
+
+button {
+    width: 50%; 
+    position: inherit;
+    left: 25%;  
+    padding: 1rem 2rem;
+    /* padding-bottom: 1rem; */
+}
+
+input {
+    padding-left: 2rem;
+}
+
+textarea {
+    padding: 1rem 2rem;
+}
+
+
+#pos-info {
+    background-color: transparent;
+    height: 3rem;
+    text-align: center;
+    font-size: 1.3rem;
+    color: mintcream;
+}
+
+.output-container {
+    position: fixed;
+    top: 5%;
+    z-index: 999;
+    display: flex;
+    height: 100vh;
+    width: 70%;
+    left: 15%;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    background-color: teal;
+}
+
+.output-container.hidden {
+    display: none;
+}
+
+.card {
+    display: flex;
+    /* position: relative; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid blue;
+    background-color: navy;
+    color: mintcream;
+    margin-top:0.25rem;
+}
+
+h4 {
+    padding-top: 0.4rem;
+}
+
+.close-btn {
+    position: fixed;
+    height: 8%;
+    top: 10px;
+    left: 5px;
+    width: 13%;
+}
