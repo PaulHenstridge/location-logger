@@ -2,6 +2,8 @@
     margin: 0;
     padding: none;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    /* color:  */
 }
 
 .container {
@@ -11,23 +13,25 @@
     left: 15%;
     flex-direction: column;
     justify-content: center;
+    /* opacity: 0.5; */
     /* align-items: center; */
     /* height: 50%; */
     /* background-color: rgba(241, 187, 85,0.2); */
 }
 
 body {
-    background-color: rgb(31, 58, 38);
+    background-color: rgb(43,9,107);
 }
 
-button, textarea, input {
+button, textarea, input, .loc-result {
     border: none;
     background-color: mintcream;
     border-radius: 5%;
-    box-shadow: rgba(255, 222, 173,0.5) 3px 1px 3px 1px;
+    box-shadow: rgba(65, 30, 131, 0.5) 3px 1px 3px 1px;
     margin-top: 2rem;
-    border: 0.1px solid green;
+    border: 0.1px solid rgb(165, 8, 204);
     font-size: 1.4rem;
+    color: rgb(43, 9, 107);
 }
 
 button {
@@ -42,8 +46,13 @@ input {
     padding-left: 2rem;
 }
 
-textarea {
+#note {
     padding: 1rem 2rem;
+    height: 15%;
+}
+
+#note:focus {
+    height: 30%;
 }
 
 
@@ -96,4 +105,8 @@ h4 {
     top: 10px;
     left: 5px;
     width: 13%;
+}
+
+.loc-result {
+    /* height:15%; */
 }

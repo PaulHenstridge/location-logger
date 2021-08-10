@@ -1,3 +1,4 @@
+
 const getcd = document.querySelector('#getcd')
 const posInfo = document.querySelector('#pos-info')
 const locTitle = document.querySelector('#title')
@@ -7,6 +8,9 @@ const output = document.querySelector('#output')
 const outputContainer = document.querySelector('.output-container')
 const copy = document.querySelector('#copy')
 const check = document.querySelector('#check')
+const locResult = document.querySelector('.loc-result')
+const body = document.querySelector('body')
+
 // const closeBtn = document.querySelector('.close-btn') dont think I need since i create it in JS
 
 const locArray = []
@@ -129,6 +133,7 @@ check.addEventListener('click', () => {
 })
 
 function checkLocation() {
+    console.log('checkLocation called')
 
     getLocation()
     
@@ -147,11 +152,28 @@ function checkLocation() {
             &&
             (loc.coords.lng > lngRange[0] && loc.coords.lng < lngRange[1])) {
                 console.log('YOU HAVE BEEN HERE!')
-                posInfo.innerText = 'SUCCESS! location recognised!!'
+                locResult.style.height = '2rem'
+                locResult.innerText = 'SUCCESS! location recognised!!'
+                reset()
+            
+                body.style.backgroundColor = 'rgb(17,77,7)'
             } else {
                 console.log('LOCATION UNKNOWN')
-                posInfo.innerText = 'Sorry, this location is not recognised'
+                locResult.style.height = '2rem'
+                locResult.innerText = 'Sorry, this location is not recognised'
+                body.style.backgroundColor = 'rgb(88,8,18)' //155,13, 13
+                reset()
             }
     })
+
+    function reset() {
+        setTimeout( () => {
+            locResult.innerText = ''
+            locResult.style.height = '0'
+            body.style.backgroundColor = 'rgb(43,9,107)'
+        },3000)
+       
+
+    }
 
 }
