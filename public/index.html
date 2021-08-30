@@ -5,29 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-    <title>Coordinate Logger</title>
+    <title>StreetView Game</title>
 </head>
 <body>
+    <script src="https://assets.what3words.com/sdk/v3.1/what3words.js?key=RDEIL73Q"></script>
+
     <div class="container">
-        <button id="getcd"> log current location</button>
-        <span id="pos-info"></span>
-       
-        <input type="text" placeholder="title" id="title">
-        <textarea name="note" id="note" cols="30" rows="10" placeholder="enter description"></textarea>
+        <div id="map"></div>
+        <div id="pano"></div>
 
-            
-        <button id="save" >Save this location</button>
-        <button id="output" >Output the location array...</button>
-        <div class="output-container hidden"></div>
-        <div class="loc-result"></div>
-        <button id="check">check this location</button>
+        <div id="autosuggest">
+            <what3words-autosuggest id="suggestComponent"/>
+        </div>
+        <button id="view-w3w">What3Words</button>
 
+        <button id="im-here">I'm Here!</button>
+        <button id="reset">Reset Map View</button>
+        <button id="view-map">Map</button>
+        <div class="clock"></div>
 
-        <script src="script.js"></script>
+        <div id="info-panel"></div>
+
     </div>
-
+    
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXK-nx-IrOQftpxop23luT8MO4Z686-60&callback=initialize&libraries=&v=weekly"
+    async
+></script>
+<script src="script.js"></script>
+    
 </body>
 </html>
 

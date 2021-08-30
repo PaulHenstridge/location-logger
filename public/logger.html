@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="logger.css">
+
+    <title>Coordinate Logger</title>
+</head>
+<body>
+    <div class="container">
+        <button id="getcd"> log current location</button>
+        <span id="pos-info"></span>
+       
+        <input type="text" placeholder="title" id="title">
+        <textarea name="note" id="note" cols="30" rows="10" placeholder="enter description"></textarea>
+
+            
+        <button id="save" >Save this location</button>
+        <button id="output" >Show saved locations</button>
+        <div class="output-container hidden"></div>
+        <div class="loc-result"></div>
+        <button id="check">Check this location</button>
+
+
+        <script src="logger.js"></script>
+    </div>
+
+</body>
+</html>
+
+

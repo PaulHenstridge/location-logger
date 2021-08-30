@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: none;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    /* color:  */
+}
+
+.container {
+    position: relative;
+    display: flex;
+    width: 70%;
+    left: 15%;
+    flex-direction: column;
+    justify-content: center;
+    /* opacity: 0.5; */
+    /* align-items: center; */
+    /* height: 50%; */
+    /* background-color: rgba(241, 187, 85,0.2); */
+}
+
+body {
+    background-color: rgb(43,9,107);
+}
+
+button, textarea, input, .loc-result {
+    border: none;
+    background-color: mintcream;
+    border-radius: 5%;
+    box-shadow: rgba(65, 30, 131, 0.5) 3px 1px 3px 1px;
+    margin-top: 2rem;
+    border: 0.1px solid rgb(165, 8, 204);
+    font-size: 1.4rem;
+    color: rgb(43, 9, 107);
+}
+
+button {
+    width: 50%; 
+    position: inherit;
+    left: 25%;  
+    padding: 1rem 2rem;
+    /* padding-bottom: 1rem; */
+}
+
+input {
+    padding-left: 2rem;
+}
+
+#note {
+    padding: 1rem 2rem;
+    height: 15%;
+}
+
+#note:focus {
+    height: 30%;
+}
+
+
+#pos-info {
+    background-color: transparent;
+    height: 3rem;
+    text-align: center;
+    font-size: 1.3rem;
+    color: mintcream;
+}
+
+.output-container {
+    position: fixed;
+    top: 5%;
+    z-index: 999;
+    display: flex;
+    height: 100vh;
+    width: 70%;
+    left: 15%;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    background-color: teal;
+}
+
+.output-container.hidden {
+    display: none;
+}
+
+.card {
+    display: flex;
+    /* position: relative; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid blue;
+    background-color: navy;
+    color: mintcream;
+    margin-top:0.25rem;
+}
+
+h4 {
+    padding-top: 0.4rem;
+}
+
+.close-btn {
+    position: fixed;
+    height: 8%;
+    top: 10px;
+    left: 5px;
+    width: 13%;
+}
+
+.loc-result {
+    /* height:15%; */
+}

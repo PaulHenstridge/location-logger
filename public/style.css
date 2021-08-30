@@ -1,112 +1,172 @@
 * {
-    margin: 0;
-    padding: none;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-    /* color:  */
+  box-sizing: border-box;
+}
+
+html,
+body, .container {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.cover {
+  width: 100vw;
+  height: 100vh;
+  z-index: 101;
+  background-color: rgba(45,87,103,0.4);
 }
 
 .container {
     position: relative;
-    display: flex;
-    width: 70%;
-    left: 15%;
-    flex-direction: column;
-    justify-content: center;
-    /* opacity: 0.5; */
-    /* align-items: center; */
-    /* height: 50%; */
-    /* background-color: rgba(241, 187, 85,0.2); */
 }
 
-body {
-    background-color: rgb(43,9,107);
+#map {
+  position: absolute;
+  top: 0;
+  left:0;
+  height: 40%;
+  width: 40%;
+  z-index: 100;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in;
 }
 
-button, textarea, input, .loc-result {
+#map.active {
+  transform: translateY(0);
+}
+
+#pano {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.clock {
+  position: absolute;
+  bottom: 15%;
+  padding: 1rem;
+}
+
+#autosuggest {
+    position: absolute;
+    bottom: 6rem;
+    left: 1rem;
+    z-index: 101;
+    transform:translateX(-150%);
+    transition: transform 0.3s ease-in;
+}
+
+#autosuggest.active {
+    transform: translateX(0);
+}
+
+#view-w3w {
+    position: absolute;
+    bottom: 6rem;
+    left: 1rem;
+    z-index: 102;
+    padding: 0.6rem 1.4rem;
     border: none;
-    background-color: mintcream;
-    border-radius: 5%;
-    box-shadow: rgba(65, 30, 131, 0.5) 3px 1px 3px 1px;
-    margin-top: 2rem;
-    border: 0.1px solid rgb(165, 8, 204);
-    font-size: 1.4rem;
-    color: rgb(43, 9, 107);
+    opacity: 0.4;
+    background-color: green;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease-in;
 }
 
-button {
-    width: 50%; 
-    position: inherit;
-    left: 25%;  
-    padding: 1rem 2rem;
-    /* padding-bottom: 1rem; */
+#view-w3w.active {
+    transform: translateX(145%);
 }
 
-input {
-    padding-left: 2rem;
+#im-here {
+  position: absolute;
+  top:1rem;
+  right:2rem;
+  z-index: 100;
+  padding: 1rem;
+  border: 0.5px solid rgb(71, 64, 64);
+  opacity:0.4;
+  border-radius: 8px;
+  font-size: 2rem;
+  background-color: rgb(233, 35, 35);
 }
 
-#note {
-    padding: 1rem 2rem;
-    height: 15%;
+#im-here:hover, #reset:hover, #view-map:hover, #view-w3w:hover { 
+  opacity: 0.9;
 }
 
-#note:focus {
-    height: 30%;
+#reset {
+  position: absolute;
+  bottom:1rem;
+  left:2rem;
+  z-index: 100;
+  padding: 1rem;
+  border: 0.5px solid rgb(233, 35, 35);
+  opacity:0.4;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  background-color: rgb(71, 64, 64);
+  color: rgb(233, 35, 35);
 }
 
-
-#pos-info {
-    background-color: transparent;
-    height: 3rem;
-    text-align: center;
-    font-size: 1.3rem;
-    color: mintcream;
+#view-map {
+  position: absolute;
+  top:1rem;
+  left: 11rem;
+  z-index: 101;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  opacity: 0.4;
+  background-color: green;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease-in;
 }
 
-.output-container {
-    position: fixed;
-    top: 5%;
-    z-index: 999;
-    display: flex;
-    height: 100vh;
-    width: 70%;
-    left: 15%;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    background-color: teal;
+#view-map.active {
+  transform: translateY(570%);
+  
 }
 
-.output-container.hidden {
-    display: none;
+#info-panel {
+  position: absolute;
+  bottom:20%;
+  left:10%;
+  right:10%;
+  top:20%;
+  z-index: 200;
+  background-color: slateblue;
+  border-radius: 8px;
+  transform:translateX(-150%);
+  transition: transform 0.3s ease-in;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.card {
-    display: flex;
-    /* position: relative; */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border: 1px solid blue;
-    background-color: navy;
-    color: mintcream;
-    margin-top:0.25rem;
+#info-panel.active {
+  transform: translateX(0);
 }
 
-h4 {
-    padding-top: 0.4rem;
+.info-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.8rem;
+  font-size: 1.2rem;
 }
 
-.close-btn {
-    position: fixed;
-    height: 8%;
-    top: 10px;
-    left: 5px;
-    width: 13%;
+.red {
+  background-color: red;
+ 
 }
 
-.loc-result {
-    /* height:15%; */
+.green {
+  background-color: green;
+
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
