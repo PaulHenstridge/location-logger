@@ -25,7 +25,7 @@ body, .container {
   top: 0;
   left:0;
   height: 40%;
-  width: 40%;
+  width: 50%;
   z-index: 100;
   transform: translateY(-100%);
   transition: transform 0.3s ease-in;
@@ -71,6 +71,7 @@ body, .container {
     background-color: green;
     font-size: 1.2rem;
     transition: transform 0.3s ease-in;
+    border-radius: 8px;
 }
 
 #view-w3w.active {
@@ -97,7 +98,7 @@ body, .container {
 #reset {
   position: absolute;
   bottom:1rem;
-  left:2rem;
+  left:1rem;
   z-index: 100;
   padding: 1rem;
   border: 0.5px solid rgb(233, 35, 35);
@@ -110,8 +111,8 @@ body, .container {
 
 #view-map {
   position: absolute;
-  top:1rem;
-  left: 11rem;
+  top:6rem;
+  left: 1rem;
   z-index: 101;
   border: none;
   padding: 0.6rem 1.4rem;
@@ -169,4 +170,10 @@ body, .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+/* hiding hte google thingy */
+
+.gm-control-active.gm-fullscreen-control, .gm-iv-address {
+    display: none;
 }
