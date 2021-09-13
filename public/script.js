@@ -17,7 +17,7 @@ const locations = [{lat: 55.939348, lng: -2.943569},{ lat:55.941709, lng:-2.9403
 
 let count = 0
 let target = locations[count]
-let lat, lng, acc, timeStamp
+let lat, lng, acc, timeStamp, parsedLat, parsedLng
 
 // timer variables
 let startTime, endTime, timediff
@@ -64,12 +64,14 @@ function startGame() {
     // add content to infoPAnel
     // start the timer
 
-    startTimer()
+    
 }
 
 document.querySelector('#playGame').addEventListener('click',() => {
   infoPanel.classList.remove('active')
     initialize()
+    startTimer()
+
 })
 
 // initialize map and streetview at given target loc
@@ -181,17 +183,16 @@ const locOptions = {
     maximumAge: 0
 }
 
-function getLocation(){
+ function getLocation(){
   navigator.geolocation.getCurrentPosition(success,error, locOptions)
 }
 
-function success(position) {
-    
+ function success(position) {  
     lat = position.coords.latitude
     lng = position.coords.longitude
     acc = position.coords.accuracy
     timeStamp = position.timestamp
-
+    console.log("from get loc ", lat, lng)
 }
 
 function error() {
@@ -202,38 +203,42 @@ function error() {
 function checkLocation() {
 
     getLocation()
-    
-    // parsing to 4 decimal places gives accuracy of 11.1m
-    let parsedLat = parseFloat(lat?.toFixed(4))
-    let parsedLng = parseFloat(lng?.toFixed(4))
 
-    let latRange = [parsedLat - 0.00008, parsedLat + 0.00008]
-    let lngRange = [parsedLng - 0.00008, parsedLng + 0.00008]
+     
+        // parsing to 4 decimal places gives accuracy of 11.1m
+        parsedLat = parseFloat(lat.toFixed(4))
+        parsedLng = parseFloat(lng.toFixed(4))
+        
+        
+        let latRange = [parsedLat - 0.00008, parsedLat + 0.00008]
+        let lngRange = [parsedLng - 0.00008, parsedLng + 0.00008]
 
 
-    if ((target.lat > latRange[0] && target.lat < latRange[1])
-        &&
-    (target.lng > lngRange[0] && target.lng < lngRange[1])) {
-        stopTimer() 
-        roundTimes.push(timeDiff)
+        if ((target.lat > latRange[0] && target.lat < latRange[1])
+            &&
+        (target.lng > lngRange[0] && target.lng < lngRange[1])) {
+            stopTimer() 
+            roundTimes.push(timeDiff)
 
-        console.log('Correct!')
-        infoPanel.innerHTML = `
-            <h2>WELL DONE!!</h2>
-            <h3>You reached your destination in ${Math.floor(timeDiff/60)}mins and ${Math.floor(timeDiff%60)}secs</h3>
-            <h4>click the button below for your next location challenge!</h4>
-            <button class="info-btn green" id="next" >Next Challenge!</button>
-        `
-        document.querySelector('#next').addEventListener('click', () => {        
-            infoPanel.innerHTML = ''
-            infoPanel.classList.remove('active')
-            nextLocation()
-        })       
-    
+            console.log('Correct!')
+            infoPanel.innerHTML = `
+                <h2>WELL DONE!!</h2>
+                <h3>You reached your destination in ${Math.floor(timeDiff/60)}mins and ${Math.floor(timeDiff%60)}secs</h3>
+                <h4>click the button below for your next location challenge!</h4>
+                <button class="info-btn green" id="next" >Next Challenge!</button>
+            `
+            document.querySelector('#next').addEventListener('click', () => {        
+                infoPanel.innerHTML = ''
+                infoPanel.classList.remove('active')
+                nextLocation()
+            })       
+        
     } else {
         console.log('Wrong')
         infoPanel.innerHTML = `
             <h2>OOPS... NOT QUITE</h2>
+            <h1> you are at ${parsedLat}, ${parsedLng}, so the acceptable range is between ${latRange}, and ${lngRange} </h1>
+            <h1> The target is ${target.lat} ${target.lng}.
             <h4>Click the green button to keep trying, or the red button to skip this level</h4>
             <button class="info-btn green" id="back" > Back to map</button>
             <button class="info-btn red" id="next" >Skip level</button>      
@@ -250,7 +255,7 @@ function checkLocation() {
         document.querySelector('#back').addEventListener('click', () => {
             infoPanel.classList.remove('active')
         })
-    }
+    }      
 }
 
 function nextLocation() {

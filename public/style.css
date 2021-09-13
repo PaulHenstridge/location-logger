@@ -111,7 +111,7 @@ body, .container {
 
 #view-map {
   position: absolute;
-  top:6rem;
+  top:1rem;
   left: 1rem;
   z-index: 101;
   border: none;
