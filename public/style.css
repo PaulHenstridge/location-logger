@@ -9,13 +9,6 @@ body, .container {
   padding: 0;
 }
 
-.cover {
-  width: 100vw;
-  height: 100vh;
-  z-index: 101;
-  background-color: rgba(45,87,103,0.4);
-}
-
 .container {
     position: relative;
 }
@@ -143,6 +136,7 @@ body, .container {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  text-align: center;
 }
 
 #info-panel.active {
@@ -172,8 +166,106 @@ body, .container {
   align-items: center;
 }
 
-/* hiding hte google thingy */
+/* hiding the google thingy */
 
 .gm-control-active.gm-fullscreen-control, .gm-iv-address {
+    display: none;
+}
+
+
+/* quiz styles */
+
+.quiz-container {
+    width: 100%;
+    height: 100%;
+    z-index: 300;
+    background-color: rgba(45,87,103,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(46, 117, 139);
+    text-align: center;
+}
+
+.score {
+    position: absolute;
+    display: inherit;
+    top: 2rem;
+    right: 10%;
+    width: 10%;
+    height: 3.5rem;
+    background-color: wheat;
+    z-index: 150;
+   text-align: center;
+    font-size: 3rem;
+}
+
+.score.high-score {
+    left: 10%;
+}
+
+.score h4 {
+    font-size: 15px;
+    transform: translateY(-100%);
+}
+.quiz-container .container {
+    position: relative;
+    /* width: 80%;
+    height: 80%; */
+    top:2rem;
+    width: 80%;
+    background-color: rgb(69, 130, 179);
+    z-index: 100;
+}
+
+.question {
+    margin: 2rem 1rem 0 1rem;
+    padding: 1rem;
+    font-size: 2rem;
+    
+}
+.answers {
+    /* padding: 1.5rem; */
+}
+
+span h3 {
+    padding: 1.5rem;
+    font-size: 2rem;
+    border: 1px solid black;
+    border-radius: 12px;
+    box-shadow: black 0.3 0.5;
+}
+
+span h3.answer-h3 {
+    background-color: inherit;
+}
+/* 
+.again, .nxt-rnd {
+    background-color: rgb(21, 90, 30);
+    padding: 0.5rem;
+    border-radius: 12px;
+} */
+
+h3 {
+    margin: 0;
+}
+
+.quiz-instructions {
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translateY(-50%);
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    z-index: 301;
+    background-color: lavenderblush;
+    padding:0.5rem;
+
+}
+
+
+.hidden {
     display: none;
 }

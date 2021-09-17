@@ -6,12 +6,31 @@ const mapPanel = document.querySelector('#map')
 const clock = document.querySelector('.clock')
 const w3w = document.querySelector('#autosuggest')
 const viewW3w = document.querySelector('#view-w3w')
+const container = document.querySelector('.container')
+const quizContainer = document.querySelector('.quiz-container')
 
+//  qiuz variables
+
+const ques = document.querySelector('.question')
+const answers = document.querySelector('.answers')
+const scoreBoard = document.querySelector('.score')
+const hiScore = document.querySelector('.high-score')
+
+const numberOfQuestions = 1
+
+let qData, catagory, question, correct, incorrect, i, quizLevelPassed
+
+let score = 0
+let highScore = 1
+
+// game locations
 const moreLocations = [{ lat: 55.948106, lng:  -3.193522},{lat: 55.947208, lng: -3.189332}, {lat: 55.947208, lng: -3.189332},
   {lat: 55.943589, lng: -3.189093},{lat: 55.942307, lng:  -3.186504},{lat: 55.951555, lng: -3.179406},
   {lat:55.9393001, lng: -2.9435928},{lat: 55.949941, lng: -3.202855}]
 
-const locations = [{lat: 55.939348, lng: -2.943569},{ lat:55.941709, lng:-2.940348},{lat:55.943545, lng:-2.945525}, {lat:55.944989, lng:-2.952791},{lat:55.940338, lng:-2.949023}]
+  const nonLocationObjects = [{game:'challenge', q1:'first question',ans1:'something',q2:'second question',ans2:'somethingsomething'}]
+
+const locations = [{lat: 55.939348, lng: -2.943569},{game:'quiz'},{game:'challenge', q1:'first question',ans1:'something'},{ lat:55.941709, lng:-2.940348},{lat:55.943545, lng:-2.945525}, {lat:55.944989, lng:-2.952791},{lat:55.940338, lng:-2.949023}]
 
 // const locations = [{lat: 55.939348, lng: -2.943569},{lat: 55.939348, lng: -2.943569}]
 
@@ -187,7 +206,7 @@ const locOptions = {
   navigator.geolocation.getCurrentPosition(success,error, locOptions)
 }
 
- function success(position) {  
+ function success(position) {   // return an object?? something to pass into a .then
     lat = position.coords.latitude
     lng = position.coords.longitude
     acc = position.coords.accuracy
@@ -210,8 +229,8 @@ function checkLocation() {
         parsedLng = parseFloat(lng.toFixed(4))
         
         
-        let latRange = [parsedLat - 0.00008, parsedLat + 0.00008]
-        let lngRange = [parsedLng - 0.00008, parsedLng + 0.00008]
+        let latRange = [parsedLat - 0.0001, parsedLat + 0.0001]
+        let lngRange = [parsedLng - 0.0001, parsedLng + 0.0001]
 
 
         if ((target.lat > latRange[0] && target.lat < latRange[1])
@@ -278,12 +297,22 @@ function nextLocation() {
         document.querySelector('.play-again').addEventListener('click', () => {
             startGame()
         })
+
+
     } else {
         count++
         target = locations[count]
+        if (target.game === 'challenge') { 
+            challenge()
+        } else if (target.game === 'quiz') {
+            quiz()
+        } else { 
+            initialize()
+            startTimer() 
+        }
+    // if target.game = quiz { run quiz logic}
+        // else
     
-        initialize()
-        startTimer() 
     }
 }
 // timer logic - maybe should use performance.now() instead? dont need super accuracy forthis but good to know.
@@ -304,4 +333,192 @@ function stopTimer() {
     endTime = new Date()
     timeDiff = (endTime - startTime)/1000
     console.log('round took', timeDiff)
+}
+
+// chalenge logic
+
+function challenge() {
+    infoPanel.classList.add('active')
+    infoPanel.innerHTML = `
+    <h2> ${target.q1}<h2/>
+
+    enter answer here <input type="text" id="q1ans">
+    `
+    const q1Ans = document.querySelector('#q1ans')
+
+    q1Ans.addEventListener('input', () => {  // add a button to click submit - better for mobile too
+        console.log(q1Ans)
+        if (q1Ans.value === target.ans1){
+            console.log('Correctamundo!')
+            nextLocation()
+        }
+    })
+}
+
+// make nice html for challenge, seyt question(s)
+// quiz - make a fullscreen div, hidden. omn quiz level unhide and inject quiz html, add logic to quiz()
+// set stages - end of street, somewhere else nearby, train station, quiz, challenge for w3w, w3w lweds to abbeyhill?
+
+
+function quiz() {
+    container.classList.add('hidden')
+    quizContainer.classList.remove('hidden')
+    let quizInstructions = document.createElement('div')
+    quizInstructions.classList.add('quiz-instructions')
+    quizInstructions.innerHTML = `
+    <p>Its quiz time.  You need to beat the high score to reach the next level.  good luck!</p>
+    <button class="info-btn green" id="playQuiz" >lets Play</button>    
+
+    `
+    quizContainer.appendChild(quizInstructions)
+
+    document.querySelector('#playQuiz').addEventListener('click', () => {
+        quizInstructions.classList.add('hidden')
+    })
+
+
+
+    getQuestions()
+
+    // using base 64 encoding so it can be decoded with atob(), so including punctuation not recognised by JSON.
+    function getQuestions() {
+        fetch(`https://opentdb.com/api.php?amount=${numberOfQuestions}&type=multiple&encode=base64`
+        )
+            .then(response => response.json())
+            .then(data => {
+                
+                qData = data.results
+                console.log(qData)
+                i = 0
+                displayQs()
+            })
+    }    
+            
+    function displayQs() {
+
+        if(i < qData.length) {
+            catagory = qData[i].catagory
+            question = atob(qData[i].question) 
+            correct = qData[i].correct_answer
+            incorrect = qData[i].incorrect_answers
+
+            console.log(question, correct)
+
+            ques.innerText = question
+            displayAnswers()
+        }  else {
+            ques.innerText = `End of the quiz!  You scored ${score} points!`
+
+            if(score <= highScore){
+                answers.innerText = "Oh dear.  Your're not very good, are you?"
+                playAgain()
+            }
+
+            if(score > highScore){
+                answers.innerText = `Congratulations! You set the new high score! The previous high score was ${highScore}!
+                
+                YOu can play the quiz again if you like, or if you have arrived to your destination, lets play on!`
+                highScore = score
+                hiScore.innerText = highScore
+                quizLevelPassed = true
+                playAgain()
+                nextRound()
+            }
+
+            // make play quiz again button
+            function playAgain() {
+                let again = document.createElement('div')
+                again.innerHTML = '<h5 class="info-btn red"> Play Again?</h5>' 
+                again.addEventListener('click', () => {
+                    again.style.display = 'none'
+                    answers.innerText = ''
+                    score = 0
+                    scoreBoard.innerText = score
+                    // if (quizLevelPassed) {
+                    //     let qNumTag = document.createElement('div')
+                    //     qNumTag.innerText = 'how many questions you want this round? huh??'
+                    //     let qNumInput = document.createElement('input')
+                    //     let qNumButton = document.createElement('button')
+                    //     qNumButton.addEventListener('click', () => {
+                    //         numberOfQuestions = qNumInput.value
+                    //         getQuestions()
+                    //     })
+                    //     answers.appendChild('qNumTag')
+                    //     answers.appendChild('qNumInput')
+                    //     answers.appendChild('qNumButton')
+                    // } else {
+                        getQuestions()
+                    // }
+                   
+                    
+            })
+            answers.appendChild(again)
+            }
+            
+
+            // make move on to next round button
+            function nextRound() {
+                let nextRound = document.createElement('div')
+                nextRound.innerHTML = '<h5 class="info-btn green"> Continue the game!</h5>' 
+                nextRound.addEventListener('click', () => {
+                    quizContainer.classList.add('hidden')
+                    container.classList.remove('hidden')
+                    nextLocation()
+            })
+            answers.appendChild(nextRound)
+            }
+          
+        }
+    }
+
+    function next() {
+        i++
+        displayQs()
+    }
+
+    function displayAnswers() {
+        // insert correct answer randomly amongst wrong ones
+        let ansList = [...incorrect]
+        let rand = Math.floor(Math.random()*4)
+        ansList.splice(rand,0,correct)
+    
+        let ansContainer = document.createElement('div')
+
+        ansList.forEach(ans => {
+            let ansSpan = document.createElement('span')
+            ansSpan.innerHTML = `<h3 class="answer-h3">${atob(ans)}</h3>`  
+            
+
+            if(ans === correct) {
+                ansSpan.addEventListener('click', () => {
+                    // alert('Correct!')
+                    ansSpan.style.backgroundColor = 'rgb(21, 90, 30)'           
+                    score+=3
+                    scoreBoard.innerText = score
+                    ques.innerText = 'Correct!'
+                    setTimeout(() => {
+                        answers.innerHTML = ''
+                        next()
+                    },600)
+                
+                })
+            } else {
+                ansSpan.addEventListener('click', () => {
+                    // alert('Wrong!')
+                    score--
+                    scoreBoard.innerText = score
+                    ques.innerText = 'Wrong!'
+                    ansSpan.style.backgroundColor = 'rgb(151, 72, 72)'
+                    setTimeout(() => {
+                        ansSpan.style.backgroundColor = 'rgb(69, 130, 179)'
+                        ques.innerText = question
+                    },1000)
+
+                })
+            }
+            ansContainer.appendChild(ansSpan)       
+        })
+        answers.appendChild(ansContainer) 
+    }  
+    
 }
