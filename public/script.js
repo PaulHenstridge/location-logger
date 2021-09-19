@@ -16,21 +16,23 @@ const answers = document.querySelector('.answers')
 const scoreBoard = document.querySelector('.score')
 const hiScore = document.querySelector('.high-score')
 
-const numberOfQuestions = 1
+const numberOfQuestions = 5
 
 let qData, catagory, question, correct, incorrect, i, quizLevelPassed
 
 let score = 0
-let highScore = 1
+let highScore = 5
 
 // game locations
 const moreLocations = [{ lat: 55.948106, lng:  -3.193522},{lat: 55.947208, lng: -3.189332}, {lat: 55.947208, lng: -3.189332},
   {lat: 55.943589, lng: -3.189093},{lat: 55.942307, lng:  -3.186504},{lat: 55.951555, lng: -3.179406},
   {lat:55.9393001, lng: -2.9435928},{lat: 55.949941, lng: -3.202855}]
 
-  const nonLocationObjects = [{game:'challenge', q1:'first question',ans1:'something',q2:'second question',ans2:'somethingsomething'}]
+  const nonLocationObjects = [{game:'challenge', question:'first question',answer:'something'}]
 
-const locations = [{lat: 55.939348, lng: -2.943569},{game:'quiz'},{game:'challenge', q1:'first question',ans1:'something'},{ lat:55.941709, lng:-2.940348},{lat:55.943545, lng:-2.945525}, {lat:55.944989, lng:-2.952791},{lat:55.940338, lng:-2.949023}]
+  const birthdayLocs = [ {lat:55.939499, lng:-2.945716, name:'Mpark'}, {lat:55.944538, lng:-2.953770, name:'tranentHighSt'},{lat:55.953269, lng:3.207214, name:'panda'}, {lat:55.954908, lng:-3.182775, name:'calton'}]
+
+const locations = [{lat: 55.939348, lng: -2.943569},{lat: 55.938599, lng:-2.944369}, {game:'quiz'},{game:'challenge', answer:'44'},{ lat:55.941709, lng:-2.940348},{lat:55.943545, lng:-2.945525}, {lat:55.944989, lng:-2.952791},{lat:55.940338, lng:-2.949023}]
 
 // const locations = [{lat: 55.939348, lng: -2.943569},{lat: 55.939348, lng: -2.943569}]
 
@@ -90,8 +92,8 @@ document.querySelector('#playGame').addEventListener('click',() => {
   infoPanel.classList.remove('active')
     initialize()
     startTimer()
-
 })
+
 
 // initialize map and streetview at given target loc
 
@@ -193,7 +195,7 @@ function initialize() {
            }
        })    
    })
-  }
+}
 
   // location logic
 const locOptions = {
@@ -203,7 +205,7 @@ const locOptions = {
 }
 
  function getLocation(){
-  navigator.geolocation.getCurrentPosition(success,error, locOptions)
+    navigator.geolocation.getCurrentPosition(success,error, locOptions)
 }
 
  function success(position) {   // return an object?? something to pass into a .then
@@ -340,17 +342,30 @@ function stopTimer() {
 function challenge() {
     infoPanel.classList.add('active')
     infoPanel.innerHTML = `
-    <h2> ${target.q1}<h2/>
+    <h2> Without using google...</h2>
+    <h3> how old was Robert Louis Stevenson when he died?<h/3>
+    <h4> hint: think about your secret clue...</h4>
 
-    enter answer here <input type="text" id="q1ans">
+    <input type="text" id="ansInput" placeholder="enter your answer here"> <button id="ansButton">Submit</button>
+
     `
-    const q1Ans = document.querySelector('#q1ans')
+    // add a buttin to hide the window to see map.  need ot keep the button avasilable to toggle the screen abck on.
+    const ansInput = document.querySelector('#ansInput')
+    const ansButton= document.querySelector('#ansButton')
 
-    q1Ans.addEventListener('input', () => {  // add a button to click submit - better for mobile too
-        console.log(q1Ans)
-        if (q1Ans.value === target.ans1){
+    ansButton.addEventListener('click', () => {  // add a button to click submit - better for mobile too
+        
+        if (ansInput.value === target.answer){
             console.log('Correctamundo!')
-            nextLocation()
+            infoPanel.innerHTML = `
+                <h1>Correctamundo!!</h1>
+                <button class="info-btn green" id="next" >Next Challenge!</button>
+            `
+            document.querySelector('#next').addEventListener('click', () => {        
+                infoPanel.innerHTML = ''
+                infoPanel.classList.remove('active')
+                nextLocation()
+            })   
         }
     })
 }
@@ -366,7 +381,7 @@ function quiz() {
     let quizInstructions = document.createElement('div')
     quizInstructions.classList.add('quiz-instructions')
     quizInstructions.innerHTML = `
-    <p>Its quiz time.  You need to beat the high score to reach the next level.  good luck!</p>
+    <p>Its quiz time.  You need to beat the high score to get the secret clue and reach the next level.  good luck!</p>
     <button class="info-btn green" id="playQuiz" >lets Play</button>    
 
     `
@@ -416,8 +431,10 @@ function quiz() {
 
             if(score > highScore){
                 answers.innerText = `Congratulations! You set the new high score! The previous high score was ${highScore}!
-                
-                YOu can play the quiz again if you like, or if you have arrived to your destination, lets play on!`
+                                    Your clue is: vibrates.gloves.evenly
+                Dont forget it, you will need it later!
+
+                You can play the quiz again if you like, or if you have arrived to your destination, lets play on!`
                 highScore = score
                 hiScore.innerText = highScore
                 quizLevelPassed = true
