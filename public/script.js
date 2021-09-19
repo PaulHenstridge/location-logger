@@ -15,24 +15,29 @@ const ques = document.querySelector('.question')
 const answers = document.querySelector('.answers')
 const scoreBoard = document.querySelector('.score')
 const hiScore = document.querySelector('.high-score')
+const skipQuiz = document.querySelector('#skip-quiz')
 
 const numberOfQuestions = 5
 
 let qData, catagory, question, correct, incorrect, i, quizLevelPassed
 
 let score = 0
-let highScore = 5
+let highScore = 10
 
 // game locations
-const moreLocations = [{ lat: 55.948106, lng:  -3.193522},{lat: 55.947208, lng: -3.189332}, {lat: 55.947208, lng: -3.189332},
-  {lat: 55.943589, lng: -3.189093},{lat: 55.942307, lng:  -3.186504},{lat: 55.951555, lng: -3.179406},
-  {lat:55.9393001, lng: -2.9435928},{lat: 55.949941, lng: -3.202855}]
+// const moreLocations = [{ lat: 55.948106, lng:  -3.193522},{lat: 55.947208, lng: -3.189332}, {lat: 55.947208, lng: -3.189332},
+//   {lat: 55.943589, lng: -3.189093},{lat: 55.942307, lng:  -3.186504},{lat: 55.951555, lng: -3.179406},
+//   {lat:55.9393001, lng: -2.9435928},{lat: 55.949941, lng: -3.202855} {lat: 55.938599, lng:-2.944369},]
 
-  const nonLocationObjects = [{game:'challenge', question:'first question',answer:'something'}]
+//   const nonLocationObjects = [{game:'challenge', question:'first question',answer:'something'}]
 
-  const birthdayLocs = [ {lat:55.939499, lng:-2.945716, name:'Mpark'}, {lat:55.944538, lng:-2.953770, name:'tranentHighSt'},{lat:55.953269, lng:3.207214, name:'panda'}, {lat:55.954908, lng:-3.182775, name:'calton'}]
+//   const birthdayLocs = [ {lat:55.939499, lng:-2.945716, name:'Mpark'}, {lat:55.944538, lng:-2.953770, name:'tranentHighSt'},{lat:55.953269, lng:3.207214, name:'panda'}, {lat:55.954908, lng:-3.182775, name:'calton'}]
 
-const locations = [{lat: 55.939348, lng: -2.943569},{lat: 55.938599, lng:-2.944369}, {game:'quiz'},{game:'challenge', answer:'44'},{ lat:55.941709, lng:-2.940348},{lat:55.943545, lng:-2.945525}, {lat:55.944989, lng:-2.952791},{lat:55.940338, lng:-2.949023}]
+const locations = [{lat: 55.939348, lng: -2.943569, name: 'home'}, {lat:55.939499, lng:-2.945716, name:'Mpark'},{lat:55.944538, lng:-2.953770, name:'tranentHighSt'},
+{game:'challenge', question:'Well done so far!  the next challenge is a bit trickier...  You need to get yourself to trash.hats.atomic. Go go go!!'},{game:'quiz'},
+{lat: 55.957336, lng: -3.169312, game:'challenge', question: 'Welcome to Abbeyhill!  You might want to check out the festival that is going on here today!  When you are ready, click to continue the game'},{lat:55.954908, lng:-3.182775, name:'calton'},
+{lat: 55.950216,lng: -3.202358, game:'challenge', question:'Without using google....how old was Robert Louis Stevenson when he died? Hint: remember your clue form earlier', answer:'44'},{lat:55.953154, lng: -3.207327, name:'panda'}, 
+{game:'challenge', question:'Well done for making it this far!  Now, you have an appointment with the Barber at 4.30pm.  I hope you are not late!'}]
 
 // const locations = [{lat: 55.939348, lng: -2.943569},{lat: 55.939348, lng: -2.943569}]
 
@@ -72,9 +77,9 @@ function startGame() {
     
     infoPanel.classList.add('active')
     infoPanel.innerHTML = `
-        <h1>Welcome to the Game</h1>
+        <h1>Hello Life!  Welcome to your game!</h1>
 
-        <h3> Are you ready to test your wits, skill and...um... patience?</h3>
+        <h3> Are you ready to test your wits, skill and...um... navigation?</h3>
         
         <div class="buttons-container">
             <button class="info-btn green" id="playGame" >lets Play</button>    
@@ -231,8 +236,8 @@ function checkLocation() {
         parsedLng = parseFloat(lng.toFixed(4))
         
         
-        let latRange = [parsedLat - 0.0001, parsedLat + 0.0001]
-        let lngRange = [parsedLng - 0.0001, parsedLng + 0.0001]
+        let latRange = [parsedLat - 0.001, parsedLat + 0.001]
+        let lngRange = [parsedLng - 0.001, parsedLng + 0.001]
 
 
         if ((target.lat > latRange[0] && target.lat < latRange[1])
@@ -258,9 +263,9 @@ function checkLocation() {
         console.log('Wrong')
         infoPanel.innerHTML = `
             <h2>OOPS... NOT QUITE</h2>
-            <h1> you are at ${parsedLat}, ${parsedLng}, so the acceptable range is between ${latRange}, and ${lngRange} </h1>
-            <h1> The target is ${target.lat} ${target.lng}.
-            <h4>Click the green button to keep trying, or the red button to skip this level</h4>
+            <h4> you are at ${parsedLat}, ${parsedLng},</h4>
+            <h4> The target is ${target.lat} ${target.lng}.
+            <h4>Click the green button to keep trying, or the red button to move on</h4>
             <button class="info-btn green" id="back" > Back to map</button>
             <button class="info-btn red" id="next" >Skip level</button>      
         `
@@ -306,8 +311,11 @@ function nextLocation() {
         target = locations[count]
         if (target.game === 'challenge') { 
             challenge()
+            initialize()
+            startTimer()
         } else if (target.game === 'quiz') {
             quiz()
+            startTimer()
         } else { 
             initialize()
             startTimer() 
@@ -341,17 +349,22 @@ function stopTimer() {
 
 function challenge() {
     infoPanel.classList.add('active')
-    infoPanel.innerHTML = `
-    <h2> Without using google...</h2>
-    <h3> how old was Robert Louis Stevenson when he died?<h/3>
-    <h4> hint: think about your secret clue...</h4>
-
-    <input type="text" id="ansInput" placeholder="enter your answer here"> <button id="ansButton">Submit</button>
-
+    infoPanel.innerHTML = ` 
+    
+    <h3>${target.question}</h3>
+    <input type="text" id="ansInput" placeholder="enter your answer here"> <button id="ansButton" class="info-btn green">Go!</button>
+   
     `
     // add a buttin to hide the window to see map.  need ot keep the button avasilable to toggle the screen abck on.
     const ansInput = document.querySelector('#ansInput')
-    const ansButton= document.querySelector('#ansButton')
+    const ansButton = document.querySelector('#ansButton')
+    const hideButton = document.querySelector('#hide')
+
+    console.log('target.answer is', target.answer)
+
+    if (target.answer = 44) () => {
+        ansInput.classList.remove('hidden')
+    }
 
     ansButton.addEventListener('click', () => {  // add a button to click submit - better for mobile too
         
@@ -361,13 +374,19 @@ function challenge() {
                 <h1>Correctamundo!!</h1>
                 <button class="info-btn green" id="next" >Next Challenge!</button>
             `
+            stopTimer()
             document.querySelector('#next').addEventListener('click', () => {        
                 infoPanel.innerHTML = ''
                 infoPanel.classList.remove('active')
                 nextLocation()
             })   
+        } else {
+            infoPanel.innerHTML = ''
+            infoPanel.classList.remove('active')
+            nextLocation()
         }
     })
+
 }
 
 // make nice html for challenge, seyt question(s)
@@ -389,6 +408,12 @@ function quiz() {
 
     document.querySelector('#playQuiz').addEventListener('click', () => {
         quizInstructions.classList.add('hidden')
+    })
+
+    skipQuiz.addEventListener('click', () => {
+        quizContainer.classList.add('hidden')
+        container.classList.remove('hidden')
+        nextLocation()
     })
 
 
@@ -435,6 +460,7 @@ function quiz() {
                 Dont forget it, you will need it later!
 
                 You can play the quiz again if you like, or if you have arrived to your destination, lets play on!`
+                stopTimer()
                 highScore = score
                 hiScore.innerText = highScore
                 quizLevelPassed = true

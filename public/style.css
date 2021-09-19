@@ -19,7 +19,7 @@ body, .container {
   left:0;
   height: 40%;
   width: 50%;
-  z-index: 100;
+  z-index: 201;
   transform: translateY(-100%);
   transition: transform 0.3s ease-in;
 }
@@ -106,7 +106,7 @@ body, .container {
   position: absolute;
   top:1rem;
   left: 1rem;
-  z-index: 101;
+  z-index: 201;
   border: none;
   padding: 0.6rem 1.4rem;
   border-radius: 8px;
@@ -117,7 +117,7 @@ body, .container {
 }
 
 #view-map.active {
-  transform: translateY(570%);
+  transform: translateY(700%);
   
 }
 
@@ -265,6 +265,23 @@ h3 {
 
 }
 
+#skip-quiz {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#hide {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    transition: transform 0.3s ease-in;
+}
+
+
+.hide-right {
+    transform:translateX(100%);
+}
 
 .hidden {
     display: none;
